@@ -1,0 +1,62 @@
+{block cssStyle}
+<style>
+    body
+    {
+        background-color: #fafafa;
+    }
+    .tabs .indicator 
+    {
+        background-color: #673ab7;
+    }
+    .input-field label 
+    {
+        color: {$colorHexa|noescape};
+    }
+    .input-field input[type=text]:focus + label 
+    {
+        color: {$colorHexa|noescape};
+    }
+    .input-field input[type=text]:focus 
+    {
+        border-bottom: 1px solid {$colorHexa|noescape};
+        box-shadow: 0 1px 0 0 {$colorHexa|noescape};
+    }
+    .input-field input[type=password]:focus + label 
+    {
+        color: {$colorHexa|noescape};
+    }
+    .input-field input[type=password]:focus 
+    {
+        border-bottom: 1px solid {$colorHexa|noescape};
+        box-shadow: 0 1px 0 0 {$colorHexa|noescape};
+    }
+    .select-dropdown > li > span
+    {
+        color: {$colorHexa|noescape};
+    }
+    .input-field input[type="checkbox"].filled-in:checked + label:after
+    {
+        border: 2px solid {$colorHexa|noescape};
+        background-color: {$colorHexa|noescape};
+    }
+</style>
+{/block}
+
+
+<!-- Header -->
+<nav>
+    <div class="nav-wrapper {$colorClass}">
+        <a href="#!" class="brand-logo">&nbsp;{$mainSetting->site_name}</a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons right">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            {foreach $menu as $item}
+                <li><a href="{$basePath}/{$item->url}">{$item->name}</a></li>
+                {/foreach}
+        </ul>
+        <ul class="side-nav grey lighten-5" id="mobile-demo">
+            {foreach $menu as $item}
+                <li><a class="white-text {$colorClass}" href="{$basePath}/{$item->url}">{$item->name}</a></li>
+                {/foreach}
+        </ul>
+    </div>
+</nav>

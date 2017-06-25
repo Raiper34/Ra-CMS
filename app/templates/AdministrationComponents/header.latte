@@ -1,0 +1,82 @@
+{block cssStyle}
+<style>
+    body
+    {
+        background-color: #fafafa;
+    }
+    .tabs .indicator 
+    {
+        background-color: {$colorHexa|noescape};
+    }
+    .input-field label 
+    {
+        color: {$colorHexa|noescape};
+    }
+    .input-field input[type=text]:focus + label 
+    {
+        color: {$colorHexa|noescape};
+    }
+    .input-field input[type=text]:focus 
+    {
+        border-bottom: 1px solid {$colorHexa|noescape};
+        box-shadow: 0 1px 0 0 {$colorHexa|noescape};
+    }
+    .input-field input[type=password]:focus + label 
+    {
+        color: {$colorHexa|noescape};
+    }
+    .input-field input[type=password]:focus 
+    {
+        border-bottom: 1px solid {$colorHexa|noescape};
+        box-shadow: 0 1px 0 0 {$colorHexa|noescape};
+    }
+    .select-dropdown > li > span
+    {
+        color: {$colorHexa|noescape};
+    }
+    .input-field input[type="checkbox"].filled-in:checked + label:after
+    {
+        border: 2px solid {$colorHexa|noescape};
+        background-color: {$colorHexa|noescape};
+    }
+</style>
+{/block}
+
+<!-- Header -->
+<nav>
+    <div class="nav-wrapper {$colorClass}">
+        <a href="#!" class="brand-logo">&nbsp;RCMS Admin</a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons right">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            <li class="{ifCurrent PageAdmin:*}active{/ifCurrent}{ifCurrent CategoryAdmin:*}active{/ifCurrent}{ifCurrent ArticleAdmin:*}active{/ifCurrent}{ifCurrent FileAdmin:*}active{/ifCurrent}"><a class="dropdown-button" href="#!" data-activates="dropdown-content">{_messages.Content}<i class="material-icons right">arrow_drop_down</i></a></li>
+            {if $user->isAllowed('UserAdmin')}<li class="{ifCurrent UserAdmin:*}active{/ifCurrent}"><a href="{link UserAdmin:default}">{_messages.Users}</a></li>{/if}
+            {if $user->isAllowed('WebsiteSettings')}<li class="{ifCurrent WebsiteSettings:*}active{/ifCurrent}"><a href="{link WebsiteSettings:default}">{_messages.WebsiteSettings}</a></li>{/if}
+            <li class="{ifCurrent ProfileAdmin:*}active{/ifCurrent}"><a class="dropdown-button" href="#!" data-activates="dropdown-profile-mobile">{$user->identity->login}<i class="material-icons right">arrow_drop_down</i></a></li>
+        </ul>
+        <ul class="side-nav grey lighten-5" id="mobile-demo">
+            {if $user->isAllowed('PageAdmin')}<li><a class="white-text {$colorClass}" href="{link PageAdmin:default}">{_messages.Pages}</a></li>{/if}
+            {if $user->isAllowed('CategoryAdmin')}<li><a class="white-text {$colorClass}" href="{link CategoryAdmin:default}">{_messages.Categories}</a></li>{/if}
+            <li><a class="white-text {$colorClass}" href="{link ArticleAdmin:default}">{_messages.Articles}</a></li>
+            <li><a class="white-text {$colorClass}" href="{link FileAdmin:default}">{_messages.Files}</a></li>
+            {if $user->isAllowed('UserAdmin')}<li><a class="white-text {$colorClass}" href="{link UserAdmin:default}">{_messages.Users}</a></li>{/if}
+            {if $user->isAllowed('WebsiteSettings')}<li><a class="white-text {$colorClass}" href="{link WebsiteSettings:default}">{_messages.WebsiteSettings}</a></li>{/if}
+            <li><a class="white-text {$colorClass} dropdown-button" href="#!" data-activates="dropdown-profile">{$user->identity->login}<i class="material-icons right white-text">arrow_drop_down</i></a></li>
+        </ul>
+    </div>
+</nav>
+<!-- Dropdown Structure -->
+<ul id="dropdown-profile" class="dropdown-content">
+    <li><a href="{link ProfileAdmin:default}" class="{$colorClass}-text">{_messages.Settings}</a></li>
+    <li><a href="{link SignAdmin:logout}" class="{$colorClass}-text">{_messages.Logout}</a></li>
+</ul>
+<ul id="dropdown-profile-mobile" class="dropdown-content">
+    <li><a href="{link ProfileAdmin:default}" class="{$colorClass}-text">{_messages.Settings}</a></li>
+    <li><a href="{link SignAdmin:logout}" class="{$colorClass}-text">{_messages.Logout}</a></li>
+</ul>
+
+<ul id="dropdown-content" class="dropdown-content">
+    {if $user->isAllowed('PageAdmin')}<li><a class="{$colorClass}-text" href="{link PageAdmin:default}">{_messages.Pages}</a></li>{/if}
+    {if $user->isAllowed('CategoryAdmin')}<li><a class="{$colorClass}-text" href="{link CategoryAdmin:default}">{_messages.Categories}</a></li>{/if}
+    <li><a class="{$colorClass}-text" href="{link ArticleAdmin:default}">{_messages.Articles}</a></li>
+    <li><a class="{$colorClass}-text" href="{link FileAdmin:default}">{_messages.Files}</a></li>
+</ul>

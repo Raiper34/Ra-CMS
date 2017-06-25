@@ -1,0 +1,53 @@
+{* Latte template *}
+
+{block keywords}{$category->keywords}{/block}
+{block description}{$category->description}{/block}
+{block title}{$category->name}{/block}
+
+{block content}
+
+{include 'header.latte'}
+
+<main>
+    <div class="container">
+        <div class="row">
+            {if $category->showTitle}<h2>{$category->name}</h2>{/if}
+            {foreach $articles as $article}
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">{$article->title}</span>
+                            <p>{$article->content|striptags|truncate:$mainSetting->articles_preview_length:''}...</p>
+                        </div>
+                        <div class="card-action">
+                            {$article->date|date:$dateFormat->string}
+                            <a href="{$article->url}" class="{$colorClass}-text right">{_messages.More}</a>
+                        </div>
+                    </div>
+                </div>
+            {/foreach}
+        </div>
+        <div class="row center-align">
+            <div class="col s12">
+                {include 'pagination.latte', itemsCount => $categoryCount, itemsPerPage => $articlesPerPage, activePage => $actualPage}
+            </div>
+        </div>
+        <div class="row center-align">
+            {if ceil($categoryCount / 10) > 1}
+            <ul class="pagination">
+                <li class="{if $actualPage == 1}disabled{/if} waves-effect"><a href="{if $actualPage != 1}{link Page:Category, $category->id, $actualPage - 1}{/if}"><i class="material-icons">chevron_left</i></a></li>
+                {for $i=1; $i <= ceil($categoryCount / 10); $i++}
+                    <li class="{if $actualPage == $i}active {$colorClass}{/if} waves-effect"><a href="{link Page:Category, $category->id, $i}">{$i}</a></li>
+                {/for}
+                <li class="{if $actualPage == ceil($categoryCount / 10)}disabled{/if} waves-effect"><a href="{if $actualPage != ceil($categoryCount / 10)}{link Page:Category, $category->id, $actualPage + 1}{/if}"><i class="material-icons">chevron_right</i></a></li>
+            </ul>
+            {/if}
+        </div>
+    </div>
+</main>
+
+{include 'adminMenu.latte'}
+
+{include 'footer.latte'}
+
+{/block}

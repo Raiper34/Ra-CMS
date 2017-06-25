@@ -1,0 +1,50 @@
+{block content}
+
+{include '../AdministrationComponents/header.latte'}
+
+<!-- Content -->
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h3>{_messages.Profile}</h3>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s6">
+                        <a class='dropdown-button btn {$colorClass}' href='#' data-activates='dropdown-color'><i class="material-icons left">visibility</i>Color</a>
+
+                        <ul id='dropdown-color' class='dropdown-content'>
+                            {foreach $colors as $color}
+                                <li class="{$color->class}"><a class="white-text" href="{link ProfileAdmin:changeColor, $color->id}">{$color->class}</a></li>
+                                {/foreach}
+                        </ul>
+                    </div>
+                    <div class="col s6">
+                        <a class='dropdown-button btn {$colorClass}' href='#' data-activates='dropdown-locale'><i class="material-icons left">message</i>{$language->name}</a>
+
+                        <ul id='dropdown-locale' class='dropdown-content'>
+                            {foreach $locales as $locale}
+                                <li><a class="{$colorClass}-text" href="{link ProfileAdmin:changeLocale, $locale->id}">{$locale->name}</a></li>
+                                {/foreach}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{include '../AdministrationComponents/footer.latte'}
+
+{/block}
+
+{block jscode}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>
+{/block}

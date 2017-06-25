@@ -1,0 +1,35 @@
+<table class="highlight">
+    <thead>
+        <tr class="">
+            <td></td>
+            <td><strong>{_messages.Name}</strong></td>
+        </tr>
+    </thead>
+    <tbody>
+        {foreach $images as $image}
+            <tr class="image" style="cursor: pointer;">
+                <td><img width="100" src="{$basePath}{$image->path}"></td>
+                <td>{$image->name}</td>
+            </tr>
+        {/foreach}
+    </tbody>
+</table>
+<div class="row center-align">
+    <div class="col s12">
+        {if $itemsCount / $itemsPerPage > 1}
+            <ul class="pagination">
+                {if $activePage != 0}
+                    <li class="waves-effect"><a href="#" class="ajax-paginator" type="button" data-href="{link ArticleAdmin:imageModalPage, $activePage - 1, $itemsPerPage}"><i class="material-icons">chevron_left</i></a></li>
+                    {/if}
+
+                {for $i = 0; $i < ($itemsCount / $itemsPerPage); $i++}
+                    <li class="waves-effect {if $activePage == $i}active {$colorClass}{/if}"><a href="#" class="ajax-paginator" type="button" data-href="{link ArticleAdmin:imageModalPage, $i, $itemsPerPage}">{$i + 1}</a></li>
+                    {/for}
+
+                {if $activePage + 1 != ceil($itemsCount / $itemsPerPage)}
+                    <li class="waves-effect"><a href="#" class="ajax-paginator" type="button" data-href="{link ArticleAdmin:imageModalPage, $activePage + 1, $itemsPerPage}"><i class="material-icons">chevron_right</i></a></li>
+                    {/if}
+            </ul>
+        {/if}
+    </div>
+</div>

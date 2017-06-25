@@ -1,0 +1,129 @@
+{block content}
+
+{include '../AdministrationComponents/header.latte'}
+
+
+<!-- Content -->
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h3>{_messages.ListOfPages}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <a href='#' data-activates='dropdown-page-type' class="dropdown-button btn {$colorClass} waves-effect waves-light"><i class="material-icons left">create</i>{_messages.NewPage}</a>
+                <ul id='dropdown-page-type' class='dropdown-content'>
+                    <li><a href="{link PageAdmin:form}" class='{$colorClass}-text'>{_messages.SingleType}</a></li>
+                    <li><a href="{link PageAdmin:categoryForm}" class='{$colorClass}-text'>{_messages.BlogType}</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Page list -->
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        <table class="highlight">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td><strong>{_messages.Name}</strong></td>
+                                    <td>{_messages.Type}</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody id="page-list">
+                                {foreach $pages as $page}
+                                    <tr class="dragable-tr" data-id="{$page->id}">
+                                        <td><i style="cursor: pointer;" class="material-icons dragable-icon">reorder</i></td>
+                                        <td>{$page->name}</td>
+                                        <td>
+                                            {if $page->article_id}
+                                                {_messages.Article}
+                                            {else}
+                                                {_messages.Category}
+                                            {/if}
+                                        </td>
+                                        <td>
+                                            <a class='dropdown-button btn {$colorClass}' href='#' data-activates='dropdownArticle-{$page->id}'><i class="material-icons left">list</i>{_messages.Action}</a>
+                                            <ul id='dropdownArticle-{$page->id}' class='dropdown-content'>
+                                                <li><a class="{$colorClass}-text" href="{if $page->category_id}{link PageAdmin:categoryForm, $page->id}{else}{link PageAdmin:form, $page->id}{/if}">{_messages.Edit}</a></li>
+                                                <li><a class="{$colorClass}-text delete-button" data-id="{$page->id}" href="#!">{_messages.Delete}</a></li>
+                                                <li><a class="{$colorClass}-text" href="{link PageAdmin:preview, $page->id}" target=“_blank”>{_messages.Preview}</a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+<!-- Modals -->
+<div id="modalDeleteMessage" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4>{_messages.AreYouSureToDeleteThisPage}</h4>
+        <div class="row">
+            <div class="col s6 center-align">
+                <button data-id="0" id="delete-button-approve" class="btn btn-large {$colorClass}">{_messages.Yes}</button>
+            </div>
+            <div class="col s6 center-align">
+                <button id="delete-button-close" class="btn btn-large {$colorClass}">{_messages.No}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include '../AdministrationComponents/footer.latte'}
+
+{/block}
+
+{block jscode}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.modal').modal();
+        var container = document.getElementById("page-list");
+        var sort = Sortable.create(container, {
+            animation: 200,
+            handle: ".dragable-icon",
+            draggable: ".dragable-tr",
+            onUpdate: function (evt) {
+                var data = [];
+                $('.dragable-tr').each(function (index) {
+                    data.push({
+                        id: $(this).attr('data-id'),
+                        order: index
+                    });
+                });
+                $.ajax({
+                    type: "POST",
+                    url: {link PageAdmin:changeOrder},
+                    data: {
+                        data: data
+                    }
+                });
+            }
+        });
+    });
+
+    $('.delete-button').click(function () {
+        $('#modalDeleteMessage').modal('open');
+        $('#delete-button-approve').attr('data-id', $(this).attr('data-id'));
+    });
+
+    $('#delete-button-close').click(function () {
+        $('#modalDeleteMessage').modal('close');
+    });
+
+    $('#delete-button-approve').click(function () {
+        window.location.href = {link PageAdmin:delete} + '?page_id=' + $(this).attr('data-id');
+    });
+</script>
+{/block}

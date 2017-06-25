@@ -1,0 +1,7 @@
+vendor
+bower_components
+log/*
+temp/cache/*
+temp/sessions/*
+upload/*
+.idea

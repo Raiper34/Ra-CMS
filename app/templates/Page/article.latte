@@ -1,0 +1,36 @@
+{* Latte template *}
+
+{block keywords}{$article->keywords}{/block}
+{block description}{$article->description}{/block}
+{block title}{$article->title}{/block}
+
+{block content}
+
+    {if $article->header_footer}
+        {include 'header.latte'}
+    {/if}
+
+
+{if $article->header_footer}
+    <main>
+        <div class="container">
+            <div class="row">
+                {if $article->showTitle}<h2>{$article->title}</h2>{/if}
+                <p>{$article->content|noescape}</p>
+            </div>
+            {*{include 'comments.latte'}*}
+        </div>
+    </main>
+{else}  
+    <main>
+        {$article->content|noescape}
+    </main>
+{/if}
+
+{include 'adminMenu.latte'}
+
+    {if $article->header_footer}
+        {include 'footer.latte'}
+    {/if}
+
+{/block}

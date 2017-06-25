@@ -1,0 +1,136 @@
+{block content}
+
+{include '../AdministrationComponents/header.latte'}
+
+
+<!-- Content -->
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h3>{_messages.ListOfArticles}</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            {*<div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        {form fileUpload class => 'dropzone', id => 'file-uploader'}
+                        {/form}
+                    </div>
+                </div>
+            </div>*}
+            <div class="col s12">
+                <a class="waves-effect waves-light btn modal-trigger {$colorClass}" href="#modal-upload"><i class="material-icons left">file_upload</i>{_messages.Upload}</a>
+                <div id="modal-upload" class="modal">
+                    <div class="modal-content">
+                        <h4>{_messages.Upload}</h4>
+                        {form fileUpload class => 'dropzone', id => 'file-uploader'}
+                        {/form}
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-light btn {$colorClass}">{_messages.Done}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="card">
+                <div class="card-content">
+                    <table class="highlight">
+                        <thead>
+                            <tr class="">
+                                <td></td>
+                                <td><strong>{_messages.Name}</strong></td>
+                                {*<td>{_messages.Url}</td>*}
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach $files as $file}
+                                <tr>
+                                    <td>
+                                        {if $file->extension != 'jpg' && $file->extension != 'png' && $file->extension != 'gif'}
+                                            <img src="https://png.icons8.com/file/color/96" width="100">
+                                        {else}
+                                            <img class="materialboxed" data-caption="{$file->name}" width="100" src="{$basePath}{$file->path}">
+                                        {/if}
+                                    </td>
+                                    <td>{$file->name}.{$file->extension}</td>
+                                    {*<td>{$baseUri}{$file->path}</td>*}
+                                    <td>
+                                        <a class='dropdown-button btn {$colorClass}' href='#' data-activates='dropdownArticle-{$file->id}'><i class="material-icons left">list</i>{_messages.Action}</a>
+                                        <ul id='dropdownArticle-{$file->id}' class='dropdown-content'>
+                                            <li><a data-clipboard-text="{$baseUri}{$file->path}" class="{$colorClass}-text clipboard" href="#!">{_messages.CopyToClipboard}</a></li>
+                                            <li><a class="{$colorClass}-text delete-button" data-id="{$file->id}" href="#!">{_messages.Delete}</a></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row center-align">
+            <div class="col s12">
+                {include '../AdministrationComponents/pagination.latte', itemsCount => $filesCount, itemsPerPage => $filesPerPage, activePage => $page}
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+<!-- Modals -->
+<div id="modalDeleteMessage" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4>{_messages.AreYouSureToDeleteThisFile}</h4>
+        <div class="row">
+            <div class="col s6 center-align">
+                <button data-id="0" id="delete-button-approve" class="btn btn-large {$colorClass}">{_messages.Yes}</button>
+            </div>
+            <div class="col s6 center-align">
+                <button id="delete-button-close" class="btn btn-large {$colorClass}">{_messages.No}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include '../AdministrationComponents/footer.latte'}
+
+{/block}
+
+{block jscode}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.modal').modal();
+
+        //DropZone
+        Dropzone.options.fileUploader = {
+            maxFilesize: 20,
+            dictDefaultMessage: {_messages.UploadFilesHere}
+        };
+
+        $('.delete-button').click(function () {
+            $('#modalDeleteMessage').modal('open');
+            $('#delete-button-approve').attr('data-id', $(this).attr('data-id'));
+        });
+
+        $('#delete-button-close').click(function () {
+            $('#modalDeleteMessage').modal('close');
+        });
+
+        $('#delete-button-approve').click(function () {
+            window.location.href = {link FileAdmin:delete} + '?file_id=' + $(this).attr('data-id');
+        });
+
+        var clipboard = new Clipboard('.clipboard');
+        clipboard.on('success', function (e) {
+            Materialize.toast({_messages.Coppied}, 4000, 'blue');
+        });
+
+    });
+</script>
+{/block}

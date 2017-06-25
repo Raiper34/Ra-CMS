@@ -1,0 +1,57 @@
+{block content}
+
+{include '../AdministrationComponents/header.latte'}
+
+<!-- Content -->
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h3>{if isset($page)}{_messages.EditPage}{else}{_messages.NewPage}{/if}</h3>
+                <a class="{$colorClass}-text" href="{link PageAdmin:default}">{_messages.Back}</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12">
+                        {form categoryPageForm}
+                            <div class="input-field col s12">
+                                <ul class="errors" n:if="$form['name']->hasErrors()">
+                                    <li n:foreach="$form['name']->errors as $error"><span class="new badge red" data-badge-caption="{$error}"></span></li>
+                                </ul>
+                                {input name}
+                                {label name /}
+                            </div>
+                            <div class="input-field col s12" id="article_div">
+                                <ul class="errors" n:if="$form['category_id']->hasErrors()">
+                                    <li n:foreach="$form['category_id']->errors as $error"><span class="new badge red" data-badge-caption="{$error}"></span></li>
+                                </ul>
+                                {input category_id}
+                                {label category_id /}
+                            </div>
+                            <div class="input-field col s12 right-align">
+                                {input submit, class=>"btn {$colorClass}"}
+                            </div>
+                            <br>
+                        {/form}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{include '../AdministrationComponents/footer.latte'}
+
+{/block}
+
+{block jscode}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //Materialize Components
+        $('select').material_select();
+    });
+</script>
+{/block}

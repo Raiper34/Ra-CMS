@@ -1,0 +1,14 @@
+{
+  "name": "Raiper-CMS",
+  "homepage": "https://github.com/Raiper34/Raiper-CMS",
+  "description": "",
+  "main": "js/main.js","install" : {
+    "path" : {
+      "css": "src/css",
+      "js": "src/js"
+    }
+  "authors": [
+    "Raiper34"
+  ],
+  "license": "MIT"
+}

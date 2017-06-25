@@ -1,0 +1,15 @@
+{if $itemsCount / $itemsPerPage > 1}
+    <ul class="pagination">
+        {if $activePage != 0}
+            <li class="waves-effect"><a href="{link Page:Category, $category->id, $activePage - 1}"><i class="material-icons">chevron_left</i></a></li>
+        {/if}
+
+        {for $i = 0; $i < ($itemsCount / $itemsPerPage); $i++}
+            <li class="waves-effect {if $activePage == $i}active {$colorClass}{/if}"><a href="{link Page:Category, $category->id, $i}">{$i + 1}</a></li>
+        {/for}
+
+        {if $activePage + 1 != ceil($itemsCount / $itemsPerPage)}
+            <li class="waves-effect"><a href="{link Page:Category, $category->id, $activePage + 1}"><i class="material-icons">chevron_right</i></a></li>
+        {/if}
+    </ul>
+{/if}

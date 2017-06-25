@@ -1,0 +1,175 @@
+{block content}
+
+{include '../AdministrationComponents/header.latte'}
+
+<main>
+    <div class="container">
+
+        <div class="row">
+            <div class="col s12">
+                <h3>{_messages.WebsiteSettings}</h3>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12">
+                        <h4>{_messages.General}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        {form settings}
+                            <div class="input-field col s12">
+                                {input site_name}
+                                {label site_name /}
+                            </div>
+                            <div class="input-field col s12">
+                                {input homepage}
+                                {label homepage /}
+                            </div>
+                            <div class="input-field col s12">
+                                {input not_found_page}
+                                {label not_found_page /}
+                            </div>
+
+                            <div class="input-field col s12">
+                                {input default_role}
+                                {label default_role /}
+                            </div>
+                            <div class="input-field col s12">
+                                {input registration:}
+                                {label registration: /}
+                            </div>
+                            <div class="input-field col s12 right-align">
+                                {input submit, class=>"btn {$colorClass}"}
+                            </div>
+                            <br>
+                        {/form}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12">
+                        <h4>{_messages.Blog}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        {form blogSettings}
+                            <div class="input-field col s12">
+                                <ul class="errors" n:if="$form['articles_per_page']->hasErrors()">
+                                    <li n:foreach="$form['articles_per_page']->errors as $error"><span class="new badge red" data-badge-caption="{$error}"></span></li>
+                                </ul>
+                                {input articles_per_page}
+                                {label articles_per_page /}
+                            </div>
+                            <div class="input-field col s12">
+                                <ul class="errors" n:if="$form['articles_preview_length']->hasErrors()">
+                                    <li n:foreach="$form['articles_preview_length']->errors as $error"><span class="new badge red" data-badge-caption="{$error}"></span></li>
+                                </ul>
+                                {input articles_preview_length}
+                                {label articles_preview_length /}
+                            </div>
+                            <div class="input-field col s12">
+                                {input date_id}
+                                {label date_id /}
+                            </div>
+                            <div class="input-field col s12 right-align">
+                                {input submit, class=>"btn {$colorClass}"}
+                            </div>
+                            <br>
+                        {/form}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12">
+                        <h4>{_messages.Scripts}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        {form scripts}
+                            <div class="col s12 left-align">
+                                {label scripts /}
+                                {input scripts style => 'display: none;', id => 'editor-content'}
+                                <div id="editor" style="height: 240px; width: 100%"></div>
+                                <br>
+                            </div>
+                            <div class="input-field col s12 right-align">
+                                {input submit, class=>"btn {$colorClass}"}
+                            </div>
+                            <br>
+                        {/form}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12">
+                        <h4>{_messages.Other}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6">
+                        <a class='dropdown-button btn {$siteColor->class}' href='#' data-activates='dropdown-color'><i class="material-icons left">visibility</i>Color</a>
+
+                        <ul id='dropdown-color' class='dropdown-content'>
+                            {foreach $colors as $color}
+                                <li class="{$color->class}"><a class="white-text" href="{link WebsiteSettings:changeColor, $color->id}">{$color->class}</a></li>
+                                {/foreach}
+                        </ul>
+                    </div>
+                    <div class="col s6">
+                        <a class='dropdown-button btn {$colorClass}' href='#' data-activates='dropdown-locale'><i class="material-icons left">message</i>{$languageWebsite->name}</a>
+
+                        <ul id='dropdown-locale' class='dropdown-content'>
+                            {foreach $locales as $locale}
+                                <li><a class="{$colorClass}-text" href="{link WebsiteSettings:changeLocale, $locale->id}">{$locale->name}</a></li>
+                                {/foreach}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{include '../AdministrationComponents/footer.latte'}
+
+{/block}
+
+{block jscode}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //Materialize Components
+        $('select').material_select();
+        
+        //Editor
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/xcode");
+        editor.getSession().setMode("ace/mode/html");
+        editor.setFontSize(16);
+        editor.getSession().setValue($('#editor-content').val());
+        editor.getSession().on('change', function () {
+            $('#editor-content').val(editor.getSession().getValue());
+        });
+    });
+</script>
+{/block}

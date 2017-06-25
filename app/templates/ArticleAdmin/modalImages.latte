@@ -1,0 +1,64 @@
+<div id="modal-images" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s6">
+                <h4>{_messages.Images}</h4>
+            </div>
+            <div class="col s6 right-align">
+                <i style="cursor: pointer;" class="material-icons close-button">clear</i>
+            </div>
+        </div>
+        <div class="row" id="image-list-container">
+            {include 'imageList.latte'}
+        </div>
+    </div>
+</div>
+
+{block jscode}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.image').click(function () {
+            insertImage($(this).find('img').attr('src'));
+        });
+
+        $('.ajax-paginator').click(function () {
+            getImagePage($(this).attr('data-href'));
+        });
+
+    });
+
+    $('.close-button').click(function () {
+        $('#modal-images').modal('close');
+    });
+    
+    function getImagePage(href)
+    {
+        $.ajax({
+                url: href,
+                data: '',
+                success: function (response) {
+                    $('#image-list-container').html(response);
+                    $('.image').click(function () {
+                        insertImage($(this).find('img').attr('src'));
+                    });
+                    $('.ajax-paginator').click(function () {
+                        getImagePage($(this).attr('data-href'));
+                    });
+                }
+            });
+    }
+
+    function insertImage(image)
+    {
+        var ed = tinymce.activeEditor;
+        var range = ed.selection.getRng();
+        ed.insertContent('<img class="responsive-img" src="' + image + '">');
+        var editor = ace.edit("editor");
+        if($('.tabs .active').attr('data-tab') == 'tiny-mce-tab')
+        {
+            editor.getSession().setValue($(tinymce.get('tinyArea').getBody()).html());
+        }
+    }
+</script>
+{/block}

@@ -1,0 +1,28 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# https://nette.org/security-warning
+#
+parameters:
+
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+session:
+	expiration: 14 days
+
+extensions:
+	translation: Kdyby\Translation\DI\TranslationExtension
+
+services:
+	- App\Model\Authenticator
+	authorizator: App\Model\Authorizator
+	- App\Model\ArticleModel
+	- App\Model\UserModel
+	- App\Model\FileModel
+	- App\Model\SettingModel
+	- App\Model\PageModel
+	- App\Model\CategoryModel
+	router: App\RouterFactory::createRouter

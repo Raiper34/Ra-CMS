@@ -1,0 +1,156 @@
+{block content}
+
+{include '../AdministrationComponents/header.latte'}
+
+<!-- Content -->
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h3>{if isset($article)}{_messages.EditArticle}{else}{_messages.NewArticle}{/if}</h3>
+                <a class="{$colorClass}-text" href="{link ArticleAdmin:default}">{_messages.Back}</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12">
+                        {form articleForm}
+                            <div class="input-field col s6">
+                                <ul class="errors" n:if="$form['title']->hasErrors()">
+                                    <li n:foreach="$form['title']->errors as $error"><span class="new badge red" data-badge-caption="{$error}"></span></li>
+                                </ul>
+                                {input title}
+                                {label title /}
+                            </div>
+                            <div class="input-field col s6">
+                                {input showTitle:}
+                                {label showTitle: /}
+                            </div>
+                            <div class="input-field col s12">
+                                <ul class="errors" n:if="$form['url']->hasErrors()">
+                                    <li n:foreach="$form['url']->errors as $error"><span class="new badge red" data-badge-caption="{$error}"></span></li>
+                                </ul>
+                                {input url}
+                                {label url /}
+                            </div>
+                            <div class="col s12">
+                                <ul class="tabs tabs-fixed-width">
+                                    <li class="tab col s3"><a data-tab="tiny-mce-tab" class="{$colorClass}-text" href="#tiny-mce-tab">Editor</a></li>
+                                    <li class="tab col s3"><a data-tab="ace-tab" class="{$colorClass}-text" href="#ace-tab">Code</a></li>
+                                </ul>
+                                <div id="tiny-mce-tab" class="col s12">
+                                    {label content /}
+                                    {input content}
+                                </div>
+                                <div id="ace-tab" class="col s12">
+                                    {label content /}
+                                    <div id="editor" style="height: 470px; width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="input-field col s12">
+                                {input header_footer:}
+                                {label header_footer: /}
+                                <br><br>
+                            </div>
+                            <div class="input-field col s12 header-footer-visibility">
+                                {input description}
+                                {label description /}
+                            </div>
+                            <div class="input-field col s6 header-footer-visibility">
+                                {input keywords, id=>"input-keywords"}
+                                {label keywords /}
+                            </div>
+                            <div class="col s6" id="preview-keywords header-footer-visibility">
+
+                            </div>
+                            <div class="input-field col s12 header-footer-visibility">
+                                {input category_id}
+                                {label category_id /}
+                            </div>
+                            <div class="input-field col s6 header-footer-visibility">
+                                {input date, type=>'date', class=>'datepicker'}
+                                {label date /}
+                            </div>
+                            <div class="input-field col s6 header-footer-visibility">
+                                {input time, type=>'time', class=>'timepicker'}
+                                {label time /}
+                            </div>
+                            <div class="input-field col s12 right-align">
+                                {input preview, class=>"btn {$colorClass}", target=>"_blank"}
+                                {input publish, class=>"btn {$colorClass}"}
+                                {input save, class=>"btn {$colorClass}"}
+                            </div>
+                            <br>
+                        {/form}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{include 'modalImages.latte'}
+
+{include '../AdministrationComponents/footer.latte'}
+
+{include 'tinyMce.latte'}
+{/block}
+
+{block jscode}
+<script type="text/javascript">
+    $(document).ready(function () {
+        initKeywords($('#input-keywords').val());
+
+        $('.timepicker').pickatime({
+            autoclose: false,
+            twelvehour: false,
+            default: new Date()
+        });
+
+        //Materialize Components
+        $('select').material_select();
+
+        $('#input-keywords').on('keyup paste', function () {
+            initKeywords($(this).val());
+        });
+
+        $('.datepicker').pickadate({
+            selectMonths: true,
+            selectYears: 15,
+            format: 'yyyy-mm-dd'
+        });
+
+        if (!$('#header_footer').prop('checked'))
+        {
+            toggleFields();
+        }
+
+        $('#header_footer').change(function () {
+            toggleFields();
+        });
+    });
+
+    function toggleFields()
+    {
+        /*$('.header-footer-visibility').toggle();
+        $('#select-category').val(null);
+        $('select').material_select();*/
+    }
+
+    function initKeywords(keywords)
+    {
+        var keywords_array = keywords.split(",");
+        var keywordString = '';
+        keywords_array.forEach(function (item) {
+            if (item == '')
+            {
+                keywordString += '<div class="chip">-</div>';
+            } else
+            {
+                keywordString += '<div class="chip">' + item + '</div>';
+            }
+        });
+        $('#preview-keywords').html(keywordString);
+    }
+</script>
+{/block}

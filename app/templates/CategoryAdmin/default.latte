@@ -1,0 +1,94 @@
+{block content}
+
+{include '../AdministrationComponents/header.latte'}
+
+
+<!-- Content -->
+<main>
+    <div class="container animated fadeInLeft">
+        <div class="row">
+            <div class="col s12">
+                <h3>{_messages.ListOfCategories}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <a href='{link CategoryAdmin:form}' class="btn {$colorClass} waves-effect waves-light"><i class="material-icons left">create</i>{_messages.NewCategory}</a>
+            </div>
+        </div>
+
+        <!-- Page list -->
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        <table class="highlight">
+                            <thead>
+                                <tr class="">
+                                    <td><strong>{_messages.Name}</strong></td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach $categories as $category}
+                                    <tr>
+                                        <td>{$category->name}</td>
+                                        <td>
+                                            <a class='dropdown-button btn {$colorClass}' href='#' data-activates='dropdownArticle-{$category->id}'><i class="material-icons left">list</i>{_messages.Action}</a>
+                                            <ul id='dropdownArticle-{$category->id}' class='dropdown-content'>
+                                                <li><a class="{$colorClass}-text" href="{link CategoryAdmin:form, $category->id}">{_messages.Edit}</a></li>
+                                                <li><a class="{$colorClass}-text delete-button" data-id="{$category->id}" href="#!">{_messages.Delete}</a></li>
+                                                <li class="divider"></li>
+                                                <li><a class="{$colorClass}-text" href="{link CategoryAdmin:preview, $category->id}" target="_blank">{_messages.Preview}</a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+<!-- Modals -->
+<div id="modalDeleteMessage" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4>{_messages.AreYouSureToDeleteThisCategory}</h4>
+        <div class="row">
+            <div class="col s6 center-align">
+                <button data-id="0" id="delete-button-approve" class="btn btn-large {$colorClass}">{_messages.Yes}</button>
+            </div>
+            <div class="col s6 center-align">
+                <button id="delete-button-close" class="btn btn-large {$colorClass}">{_messages.No}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include '../AdministrationComponents/footer.latte'}
+
+{/block}
+
+{block jscode}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.modal').modal();
+    });
+    
+    $('.delete-button').click(function () {
+        $('#modalDeleteMessage').modal('open');
+        $('#delete-button-approve').attr('data-id', $(this).attr('data-id'));
+    });
+
+    $('#delete-button-close').click(function () {
+        $('#modalDeleteMessage').modal('close');
+    });
+
+    $('#delete-button-approve').click(function () {
+        window.location.href = {link CategoryAdmin:delete} + '?category_id=' + $(this).attr('data-id');
+    });
+</script>
+{/block}

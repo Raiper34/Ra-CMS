@@ -1,0 +1,49 @@
+{**
+ * @param string   $basePath web base path
+ * @param array    $flashes  flash messages
+*}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>{ifset title}{include title|stripHtml} | {/ifset} {ifset $mainSetting->site_name}{$mainSetting->site_name}{else}RCMS{/ifset}</title>
+        <meta name="viewport" content="width=device-width">
+        <meta name="keywords" content="{block keywords}{/block}">
+        <meta name="description" content="{block description}{/block}">
+        
+        {block scripts}
+        <!-- Fonts -->
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <!-- Jquery -->
+        <script src="{$basePath}/bower_components/jquery/dist/jquery.js"></script>
+        <!-- MaterializeCSS -->
+        <link rel="stylesheet" href="{$basePath}/bower_components/materialize/bin/materialize.css">
+        <script src="{$basePath}/bower_components/materialize/bin/materialize.js"></script>
+        <!-- MaterializeClock Picker -->
+        <script src="{$basePath}/bower_components/materialize-clockpicker/dist/js/materialize.clockpicker.js"></script>
+        <link rel="stylesheet" href="{$basePath}/bower_components/materialize-clockpicker/dist/css/materialize.clockpicker.css">
+        <!-- AnimateCSS -->
+        <!-- My code -->
+        <link rel="stylesheet" href="{$basePath}/css/style.css">
+        <script src="{$basePath}/js/main.js"></script>
+        
+        {/block}
+
+        <!-- CSS Style -->
+        {block cssStyle}{/block}
+        
+        {ifset $mainSetting->scripts}{$mainSetting->scripts|noescape}{/ifset}
+        
+    </head>
+
+    <body>
+        {*<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>*}
+
+        {include content}
+
+        <!-- JS code -->
+        {block jscode}{/block}
+    </body>
+</html>

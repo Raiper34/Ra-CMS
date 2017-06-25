@@ -1,0 +1,55 @@
+{block content}
+
+{include '../AdministrationComponents/header.latte'}
+
+<!-- Content -->
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h3>{if isset($category)}{_messages.EditCategory}{else}{_messages.NewCategory}{/if}</h3>
+                <a class="{$colorClass}-text" href="{link CategoryAdmin:default}">{_messages.Back}</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12">
+                        {form categoryForm}
+                            <div class="input-field col s6">
+                                <ul class="errors" n:if="$form['name']->hasErrors()">
+                                    <li n:foreach="$form['name']->errors as $error"><span class="new badge red" data-badge-caption="{$error}"></span></li>
+                                </ul>
+                                {input name}
+                                {label name /}
+                            </div>
+                            <div class="input-field col s6">
+                                {input showTitle:}
+                                {label showTitle: /}
+                            </div>
+                            <div class="input-field col s12">
+                                <ul class="errors" n:if="$form['url']->hasErrors()">
+                                    <li n:foreach="$form['url']->errors as $error"><span class="new badge red" data-badge-caption="{$error}"></span></li>
+                                </ul>
+                                {input url}
+                                {label url /}
+                            </div>
+                            <div class="input-field col s12">
+                                {input description}
+                                {label description /}
+                            </div>
+                            <div class="input-field col s12 right-align">
+                                {input submit, class=>"btn {$colorClass}"}
+                            </div>
+                            <br>
+                        {/form}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+                        
+{include '../AdministrationComponents/footer.latte'}
+
+{/block}

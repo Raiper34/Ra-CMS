@@ -1,0 +1,50 @@
+{block jscode}
+<script type="text/javascript" scr="{$basePath}/bower_components/ace-builds/src-min-noconflict/ace.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.modal').modal();
+
+        //Ace
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/xcode");
+        editor.getSession().setMode("ace/mode/html");
+        editor.setFontSize(16);
+        editor.getSession().setValue($('#tinyArea').val());
+        editor.getSession().on('change', function () {
+            if($('.tabs .active').attr('data-tab') == 'ace-tab')
+            {
+                $(tinymce.get('tinyArea').getBody()).html(editor.getSession().getValue());
+            }
+        });
+
+        //TinyMCE  
+        tinymce.init({
+            selector: '#tinyArea',
+            height: "360",
+            plugins: "image, paste, table, link",
+            paste_data_images: true,
+            relative_urls: false,
+            setup: function (ed) {
+                ed.addButton('uploaded_images', {
+                    //title: 'uploaded_images',
+                    text: 'Images',
+                    icon: false,
+                    onclick: function () {
+                        //ed.focus();
+                        //ed.selection.setContent('Hello world!');
+                        $('#modal-images').modal('open');
+                    }
+                });
+                ed.on('keyup paste cut change', function(e) {
+                    if($('.tabs .active').attr('data-tab') == 'tiny-mce-tab')
+                    {
+                        editor.getSession().setValue($(tinymce.get('tinyArea').getBody()).html());
+                    }
+                });
+            },
+            menubar: 'edit format table tools',
+            toolbar: 'undo redo | styleselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | code link uploaded_images'
+        });
+    });
+</script>
+{/block}

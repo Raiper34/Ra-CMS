@@ -1,0 +1,12 @@
+<!-- Admin menu -->
+{if $user->isLoggedIn()}
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large red">
+            <i class="large material-icons">menu</i>
+        </a>
+        <ul>
+            <li><a href="{if isset($article)}{if $article->type == 0}{link ArticleAdmin:form, $article->id}{else}{link ArticleAdmin:customForm, $article->id}{/if}{else}{link CategoryAdmin:form, $category->id}{/if}" class="btn-floating green"><i class="material-icons">mode_edit</i></a></li>
+            <li><a href="{link ArticleAdmin:default}" class="btn-floating blue"><i class="material-icons">home</i></a></li>
+        </ul>
+    </div>
+{/if}

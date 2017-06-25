@@ -1,0 +1,115 @@
+{block content}
+
+{include '../AdministrationComponents/header.latte'}
+
+
+<!-- Content -->
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h3>{_messages.ListOfArticles}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <a href='{link ArticleAdmin:form}' class="btn {$colorClass}"><i class="material-icons left">create</i>{_messages.NewArticle}</a>
+            </div>
+        </div>
+
+        <!-- Article list -->
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        <table class="highlight">
+                            <thead>
+                                <tr class="">
+                                    <td><strong>{_messages.Name}</strong></td>
+                                    <td><strong>{_messages.Published}</strong></td>
+                                    <td><strong>{_messages.Date}</strong></td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach $articles as $article}
+                                    <tr>
+                                        <td>{$article->title}</td>
+                                        <td>
+                                            {if $article->published}
+                                                <i class="material-icons green-text">done</i>
+                                            {else}
+                                                <i class="material-icons red-text">close</i>
+                                            {/if}
+                                        </td>
+                                        <td>{$article->date|date:'%d.%m.%Y %H:%M'}</td>
+                                        <td>
+                                            <a class='dropdown-button btn {$colorClass}' href='#' data-activates='dropdownArticle-{$article->id}'><i class="material-icons left">list</i>{_messages.Action}</a>
+                                            <ul id='dropdownArticle-{$article->id}' class='dropdown-content'>
+                                                <li><a class="{$colorClass}-text" href="{if $article->type}{link ArticleAdmin:customForm, $article->id}{else}{link ArticleAdmin:form, $article->id}{/if}">{_messages.Edit}</a></li>
+                                                <li><a class="{$colorClass}-text delete-button" data-id="{$article->id}" href="#!">{_messages.Delete}</a></li>
+                                                <li>
+                                                    <a class="{$colorClass}-text" href="{link ArticleAdmin:publishToggle, $article->id}">
+                                                        {if $article->published}{_messages.Unpublish}{else}{_messages.Publish}{/if}
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li><a class="{$colorClass}-text" href="{link ArticleAdmin:preview, $article->id}" target="_blank">{_messages.Preview}</a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row center-align">
+            <div class="col s12">
+                {include '../AdministrationComponents/pagination.latte', itemsCount => $articlesCount, itemsPerPage => $articlesPerPage, activePage => $page}
+            </div>
+        </div>
+
+    </div>
+</main>
+<!-- Modals -->
+<div id="modalDeleteMessage" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4>{_messages.AreYouSureToDeleteThisArticle}</h4>
+        <div class="row">
+            <div class="col s6 center-align">
+                <button data-id="0" id="delete-button-approve" class="btn btn-large {$colorClass}">{_messages.Yes}</button>
+            </div>
+            <div class="col s6 center-align">
+                <button id="delete-button-close" class="btn btn-large {$colorClass}">{_messages.No}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include '../AdministrationComponents/footer.latte'}
+
+{/block}
+
+{block jscode}
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Materialize CSS
+        $('.modal').modal();
+    });
+
+    $('.delete-button').click(function () {
+        $('#modalDeleteMessage').modal('open');
+        $('#delete-button-approve').attr('data-id', $(this).attr('data-id'));
+    });
+
+    $('#delete-button-close').click(function () {
+        $('#modalDeleteMessage').modal('close');
+    });
+
+    $('#delete-button-approve').click(function () {
+        window.location.href = {link ArticleAdmin:delete} + '?article_id=' + $(this).attr('data-id');
+    });
+</script>
+{/block}

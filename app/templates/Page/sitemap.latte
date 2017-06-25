@@ -1,0 +1,37 @@
+{block keywords}{/block}
+{block description}{/block}
+
+{block content}
+
+
+{include 'header.latte'}
+
+<main>
+    <div class="container">
+        <h2>{_messages.SiteMap}</h2>
+        <ul class="collection">
+            <li class="collection-item">
+                <a class="{$colorClass}-text" href="{link Page:default}">{_'HomePage'}</a>
+            </li>
+            {foreach $pages as $page}
+                <li class="collection-item">
+                    <a class="{$colorClass}-text" href="{$page->url}">{$page->name}</a>
+                </li>
+            {/foreach}
+            {foreach $categories as $category}
+                <li class="collection-item">
+                    <a class="{$colorClass}-text" href="{$category->url}">{$category->name}</a>
+                </li>
+            {/foreach}
+            {foreach $articles as $article}
+                <li class="collection-item">
+                    <a class="{$colorClass}-text" href="{$article->url}">{$article->title}</a>
+                </li>
+            {/foreach}
+        </ul>
+    </div>
+</main>
+
+{include 'footer.latte'}
+
+{/block}

@@ -1,0 +1,66 @@
+{**
+ * @param string   $basePath web base path
+ * @param array    $flashes  flash messages
+*}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>{ifset title}{include title|stripHtml} | {/ifset} {ifset $mainSetting->site_name}{$mainSetting->site_name}{else}RCMS{/ifset}</title>
+        <meta name="viewport" content="width=device-width">
+        <meta name="keywords" content="{block keywords}{/block}">
+        <meta name="description" content="{block description}{/block}">
+        
+        {block scripts}
+        <!-- Fonts -->
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <!-- Jquery -->
+        <script src="{$basePath}/bower_components/jquery/dist/jquery.js"></script>
+        <!-- Nette -->
+        <script src="https://nette.github.io/resources/js/netteForms.min.js"></script>
+        <script src="{$basePath}/bower_components/nette.ajax.js/nette.ajax.js"></script>
+        <!-- MaterializeCSS -->
+        <link rel="stylesheet" href="{$basePath}/bower_components/materialize/bin/materialize.css">
+        <script src="{$basePath}/bower_components/materialize/bin/materialize.js"></script>
+        <!-- MaterializeClock Picker -->
+        <script src="{$basePath}/bower_components/materialize-clockpicker/dist/js/materialize.clockpicker.js"></script>
+        <link rel="stylesheet" href="{$basePath}/bower_components/materialize-clockpicker/dist/css/materialize.clockpicker.css">
+        <!-- AnimateCSS -->
+        <link rel="stylesheet" href="{$basePath}/bower_components/animate.css/animate.css">
+        <!-- TinyMCE -->
+        <script src="{$basePath}/bower_components/tinymce/tinymce.min.js"></script>
+        <!-- Dropzone -->
+        <link rel="stylesheet" href="{$basePath}/bower_components/dropzone/dist/min/dropzone.min.css">
+        <script src="{$basePath}/bower_components/dropzone/dist/min/dropzone.min.js"></script>
+        <!-- Sortable -->
+        <script src="{$basePath}/bower_components/Sortable/Sortable.js"></script>
+        <!-- Ace editor -->
+        <script src="{$basePath}/bower_components/ace-builds/src-min/ace.js"></script>
+        <!-- Particles.js -->
+        <script src="{$basePath}/bower_components/particles.js/particles.js"></script>
+        <!-- Clipboard.js -->
+        <script src="{$basePath}/bower_components/clipboard/dist/clipboard.js"></script>
+        <!-- My code -->
+        <link rel="stylesheet" href="{$basePath}/css/style.css">
+        <script src="{$basePath}/js/main.js"></script>
+        
+        {/block}
+
+        <!-- CSS Style -->
+        {block cssStyle}{/block}
+        
+        {ifset $mainSetting->scripts}{$mainSetting->scripts|noescape}{/ifset}
+        
+    </head>
+
+    <body>
+        {*<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>*}
+
+        {include content}
+
+        <!-- JS code -->
+        {block jscode}{/block}
+    </body>
+</html>
