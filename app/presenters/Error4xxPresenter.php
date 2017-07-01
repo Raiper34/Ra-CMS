@@ -8,8 +8,15 @@ class Error4xxPresenter extends Nette\Application\UI\Presenter {
 
     /** @var \App\Model\ArticleModel @inject */
     public $modelArticle;
+
     /** @var \Kdyby\Translation\Translator @inject */
     public $translator;
+
+    /** @var \App\Model\SettingModel @inject */
+    public $modelSetting;
+
+    /** @var \App\Model\Authorizator @inject */
+    public $authorizator;
 
     public function startup() 
     {
