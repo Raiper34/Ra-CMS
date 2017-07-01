@@ -61,7 +61,7 @@
                                 {input keywords, id=>"input-keywords"}
                                 {label keywords /}
                             </div>
-                            <div class="col s6" id="preview-keywords header-footer-visibility">
+                            <div class="col s6" id="preview-keywords" class="header-footer-visibility">
 
                             </div>
                             <div class="input-field col s12 header-footer-visibility">
@@ -142,7 +142,7 @@
         var keywords_array = keywords.split(",");
         var keywordString = '';
         keywords_array.forEach(function (item) {
-            if (item == '')
+            if (item == '' || item == ' ')
             {
                 keywordString += '<div class="chip">-</div>';
             } else
@@ -150,6 +150,7 @@
                 keywordString += '<div class="chip">' + item + '</div>';
             }
         });
+        console.log('AAAA');
         $('#preview-keywords').html(keywordString);
     }
 </script>

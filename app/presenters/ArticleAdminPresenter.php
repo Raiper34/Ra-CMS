@@ -14,7 +14,7 @@ use Tracy\Debugger;
 class ArticleAdminPresenter extends BasePresenter
 {
     const ARTICLES_PER_PAGE = 10;
-    const FILES_PER_PAGE = 1;
+    const FILES_PER_PAGE = 5;
 
     private $modelArticle;
     private $modelFile;
