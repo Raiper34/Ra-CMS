@@ -6,9 +6,7 @@
 
 {block content}
 
-    {if $article->header_footer}
-        {include 'header.latte'}
-    {/if}
+{include 'header.latte'}
 
 
 {if $article->header_footer}
@@ -29,8 +27,6 @@
 
 {include 'adminMenu.latte'}
 
-    {if $article->header_footer}
-        {include 'footer.latte'}
-    {/if}
+{include 'footer.latte'}
 
 {/block}
